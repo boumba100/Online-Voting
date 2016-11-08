@@ -1,0 +1,26 @@
+@CHARSET "ISO-8859-1";
+
+h1 {
+	margin-left:auto;
+    margin-right:auto;
+    font-style:bold;
+    font-size: 90px;
+}
+input[type=button] {
+	margin-left:auto;
+    margin-right:auto;
+    padding:10px;
+    -webkit-border-radius: 5px;
+    border-radius: 5px; 
+    font-size: 30px;
+    font-weight: bold;
+}
+
+.wrapper {
+	text-align: center;
+}
+
+.button {
+    position: absolute;
+    top: 50%;
+}
