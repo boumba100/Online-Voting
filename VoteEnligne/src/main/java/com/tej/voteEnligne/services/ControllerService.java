@@ -1,6 +1,6 @@
 package com.tej.voteEnligne.services;
 
 public interface ControllerService {
-	public String getCurrentAct();
+	public String getCurrentAct(String actName);
 
 }
