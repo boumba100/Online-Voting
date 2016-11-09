@@ -23,7 +23,7 @@ import com.tej.voteEnligne.services.ControllerService;
 public class HomeController {
 	
 	@Autowired
-	private ControllerService controllerService = new ControllerServiceImplement();
+	private static ControllerService controllerService = new ControllerServiceImplement();
 	
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String home() {
