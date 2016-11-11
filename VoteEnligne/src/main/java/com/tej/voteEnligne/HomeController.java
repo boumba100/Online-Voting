@@ -52,16 +52,62 @@ public class HomeController {
 		return actResult;
 	}
 
-	@RequestMapping(value = "creation", method = RequestMethod.GET)
+	@RequestMapping(value = "/creation", method = RequestMethod.GET)
 	public String creation() {
 		return "CreateVote";
 	}
 
-	@RequestMapping(value = "creation", method = RequestMethod.POST)
+	@RequestMapping(value = "/creation", method = RequestMethod.POST)
 	public String creation(@RequestParam("actsString") String actsString, @RequestParam("code") String code,
 			@RequestParam("adminCode") String adminCode) {
 		System.out.println(controllerService.createVoteSession(code, actsString, adminCode));
 		return "CreateVote";
 	}
+	
+	@RequestMapping(value = "controle", method = RequestMethod.GET)
+	public String controle() {
+		return "controle";
+	}
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -10,7 +10,7 @@
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 </head>
 <body>
-	<form id="uploadFileFile" method="POST">
+	<form id="uploadFile" method="POST">
 		<textarea name="actsString" cols="100" rows="20"></textarea></br>
 		Code : <input type="text" name="code"/></br>
 		Code de passe : <input type="password" name="adminCode"/>
@@ -21,7 +21,7 @@
 
 <script type="text/javascript">
 function submitFile() {
-	document.getElementById('uploadFileFile').submit();
+	document.getElementById('uploadFile').submit();
 }
 	
 </script>
