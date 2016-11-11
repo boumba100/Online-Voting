@@ -16,6 +16,19 @@ input[type=button] {
     font-weight: bold;
 }
 
+input[type=text] {
+	text-align: center;
+	margin-left:auto;
+    margin-right:auto;
+    padding:10px;
+    -webkit-border-radius: 5px;
+    border-radius: 5px; 
+    font-size: 30px;
+    font-weight: bold;
+    width: 200px;
+}
+
+
 .wrapper {
 	text-align: center;
 }
@@ -24,3 +37,4 @@ input[type=button] {
     position: absolute;
     top: 50%;
 }
+

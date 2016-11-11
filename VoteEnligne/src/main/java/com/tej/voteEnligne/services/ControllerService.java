@@ -1,6 +1,12 @@
 package com.tej.voteEnligne.services;
 
+import org.json.JSONObject;
+
 public interface ControllerService {
-	public String getCurrentAct(String actName);
+	
+	public String createVoteSession(String code, String actsString, String adminCode);
+	
+    public JSONObject getVoteSession(String code);
+	
 
 }

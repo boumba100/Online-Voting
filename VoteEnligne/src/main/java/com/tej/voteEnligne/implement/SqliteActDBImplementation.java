@@ -26,37 +26,11 @@ public class SqliteActDBImplementation implements ActDB {
 	}
 
 	@Override
-	public void addAct(Act act) {
-		Connection connection = null;
-		Statement statement = null;
-		try {
-			connection = getConnection();
-			statement = connection.createStatement();
-			statement.setQueryTimeout(10);
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} finally {
-			if(connection != null) {
-				try {
-					statement.close();
-					connection.commit();
-					connection.close();
-				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
-		}
-	}
-
-	@Override
 	public void initDB() {
-		System.out.println("test 123");
 		Connection connection = null;
 		Statement statement = null;
-		String sqlString = "CREATE TABLE IF NOT EXISTS " + ACTS_TABLE + " (" + ACT_NAME_FIELD + " TEXT,"
-				+ NAMES_FIELD + " TEXT," + SCORE_FIELD + " INT)";
+		String sqlString = "CREATE TABLE IF NOT EXISTS " + ACTS_TABLE + " (" + ACT_NAME_FIELD + " TEXT," + NAMES_FIELD
+				+ " TEXT," + SCORE_FIELD + " INT)";
 		try {
 			connection = getConnection();
 			statement = connection.createStatement();
@@ -73,25 +47,45 @@ public class SqliteActDBImplementation implements ActDB {
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
-			
+
 		}
 	}
-	
+
+	@Override
+	public void addAct(Act act) {
+		Connection connection = null;
+		Statement statement = null;
+		try {
+			connection = getConnection();
+			statement = connection.createStatement();
+			statement.setQueryTimeout(10);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			if (connection != null) {
+				try {
+					statement.close();
+					connection.commit();
+					connection.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+	}
+
 	private Connection getConnection() throws SQLException {
 		return DriverManager.getConnection("jdbc:sqlite:" + ACTS_DB_FIELD);
 	}
-	
+
 	private String namesArrayToString(String[] namesArray) {
 		String namesString = "";
-		for(String name: namesArray) {
+		for (String name : namesArray) {
 			namesString += name + ",";
 		}
 		return namesString;
 	}
-	
 }
-
-
 
 
 

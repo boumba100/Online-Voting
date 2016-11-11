@@ -21,25 +21,25 @@ import com.tej.voteEnligne.services.ControllerService;
 @Controller
 @ComponentScan("com.tej.services")
 public class HomeController {
-	
+
 	@Autowired
 	private static ControllerService controllerService = new ControllerServiceImplement();
-	
+
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String home() {
 		return "home";
 	}
-	
+
 	@RequestMapping(value = "/", method = RequestMethod.POST)
-	public String home(@RequestParam("chosenPage") String chosenPage) {
+	public String home(@RequestParam("chosenPage") String chosenPage, @RequestParam("code") String code) {
 		return chosenPage;
 	}
-	
-	@RequestMapping(value = "/pageVote", method = {RequestMethod.GET, RequestMethod.POST})
+
+	@RequestMapping(value = "/pageVote", method = { RequestMethod.GET, RequestMethod.POST })
 	public String pageVote() {
 		return "pageVote";
 	}
-	
+
 	@RequestMapping(value = "/getAct", method = RequestMethod.GET)
 	@ResponseBody
 	public String getAct() {
@@ -47,28 +47,21 @@ public class HomeController {
 		try {
 			actResult = new JSONObject().put("test", "test").toString();
 		} catch (JSONException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return actResult;
 	}
-	
+
+	@RequestMapping(value = "creation", method = RequestMethod.GET)
+	public String creation() {
+		return "CreateVote";
+	}
+
+	@RequestMapping(value = "creation", method = RequestMethod.POST)
+	public String creation(@RequestParam("actsString") String actsString, @RequestParam("code") String code,
+			@RequestParam("adminCode") String adminCode) {
+		System.out.println(controllerService.createVoteSession(code, actsString, adminCode));
+		return "CreateVote";
+	}
+
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

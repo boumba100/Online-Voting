@@ -1,19 +1,33 @@
 package com.tej.voteEnligne.implement;
 
+
+import org.json.JSONObject;
 import org.springframework.stereotype.Service;
 
-import com.tej.voteEnligne.services.ActDB;
 import com.tej.voteEnligne.services.ControllerService;
+import com.tej.voteEnligne.services.VoteService;
 
 @Service
 public class ControllerServiceImplement implements ControllerService{
-	private ActDB actDB;
+	private static VoteService voteService; 
 	
 	public ControllerServiceImplement() {
-		this.actDB = new SqliteActDBImplementation();
+		voteService = new VoteService();
 	}
+	
 	@Override
-	public String getCurrentAct(String actName) {
+	public String createVoteSession(String code, String actsString, String adminCode) {
+		String creationResult = voteService.createVoteSession(code, actsString, adminCode);
+		if(creationResult == null) {
+			return "Creation complète";
+		} else {
+			return creationResult;
+		}
+	}
+	
+	@Override
+	public JSONObject getVoteSession(String code) {
 		return null;
 	}
+	
 }
