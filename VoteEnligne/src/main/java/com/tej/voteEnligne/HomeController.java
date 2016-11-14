@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.context.request.WebRequest;
 
 import com.tej.voteEnligne.implement.ControllerServiceImplement;
 import com.tej.voteEnligne.services.ControllerService;
@@ -68,7 +69,14 @@ public class HomeController {
 	public String controle() {
 		return "controle";
 	}
-
+	
+	@RequestMapping(value = "controle", method = RequestMethod.POST)
+	@ResponseBody
+	public String controle(WebRequest webRequest) {
+		return controllerService.processControlRequest(webRequest).toString();
+	}
+	
+	
 }
 
 

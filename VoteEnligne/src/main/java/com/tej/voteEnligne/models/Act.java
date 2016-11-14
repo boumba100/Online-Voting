@@ -29,6 +29,14 @@ public class Act {
 		return actInfo.toString();
 	}
 	
+	public String getLabel () {
+		return this.label;
+	}
+	
+	public int getScore() {
+		return this.score;
+	}
+	
 	private String[] extractNamesArray(String[] actArray) {
 		String[] namesArray = new String[actArray.length - 1];
 		for(int i = 1; i < actArray.length - 1; i ++) {
