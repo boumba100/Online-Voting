@@ -28,6 +28,10 @@ input[type=text] {
     width: 200px;
 }
 
+span {
+	color: red;
+}
+
 
 .wrapper {
 	text-align: center;

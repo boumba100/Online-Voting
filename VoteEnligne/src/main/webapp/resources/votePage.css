@@ -1,0 +1,103 @@
+@CHARSET "UTF-8";
+
+h1 {
+	margin-left:auto;
+    margin-right:auto;
+    font-style:bold;
+    font-size: 90px;
+}
+input[type=button] {
+	margin-top:50px;
+	text-align: center;
+    padding:10px;
+    -webkit-border-radius: 5px;
+    border-radius: 5px; 
+    font-size: 30px;
+    font-weight: bold;
+    width: 300px;
+}
+
+input[type=text] {
+	
+}
+
+input[type=password] {
+	
+}
+
+span {
+	font-style: bold;
+	font-size: 30px;
+	color: red;
+}
+
+.voteSessionDiv{
+	text-align: center;
+}
+
+
+.actCell {
+	margin-top:10%;
+	text-align: center;
+    padding:10px;
+    -webkit-border-radius: 5px;
+    border-radius: 5px; 
+    font-size: 20px;
+    font-weight: bold;
+    width: 200px;
+}
+
+.nextActButton {
+	margin-top:30%;
+}
+
+.activeActCell {
+	margin-top:10%;
+	text-align: center;
+    padding:10px;
+    -webkit-border-radius: 5px;
+    border-radius: 5px; 
+    font-size: 20px;
+    font-weight: bold;
+    width: 200px;
+    background:#66a3ff;
+    color:white;
+}
+
+.actListDiv {
+	text-align: center;
+}
+
+.invisible {
+	visibility: hidden;
+}
+
+.startInput {
+	text-align: center;
+}
+
+.button {
+    top: 50%;
+}
+
+.codeInput {
+    margin-top:10%;
+	text-align: center;
+    padding:10px;
+    -webkit-border-radius: 5px;
+    border-radius: 5px; 
+    font-size: 30px;
+    font-weight: bold;
+    width: 300px;
+}
+
+.passwordInput {
+    margin-top:1%;
+	text-align: center;
+    padding:10px;
+    -webkit-border-radius: 5px;
+    border-radius: 5px; 
+    font-size: 30px;
+    font-weight: bold;
+    width: 300px;
+}

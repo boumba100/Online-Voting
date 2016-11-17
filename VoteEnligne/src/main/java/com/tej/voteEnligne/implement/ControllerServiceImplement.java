@@ -28,11 +28,6 @@ public class ControllerServiceImplement implements ControllerService {
 	}
 
 	@Override
-	public JSONObject getVoteSession(String code) {
-		return null;
-	}
-
-	@Override
 	public String startVoteSession(String code, String passcode) {
 		return voteService.initVoteSession(passcode, code);
 	}
@@ -42,7 +37,7 @@ public class ControllerServiceImplement implements ControllerService {
 		String requestType = webRequest.getParameter("type");
 		JSONObject requestResult = null;
 		System.out.println(webRequest.getParameter("type"));
-		
+
 		if (requestType.equals("command")) {
 			if (webRequest.getParameter("command").equals("nextAct")) {
 				requestResult = voteService.nextAct(webRequest.getParameter("code"),
@@ -67,16 +62,107 @@ public class ControllerServiceImplement implements ControllerService {
 					requestResult.put("succes", false);
 					requestResult.put("message", sessionStartResult);
 				} catch (JSONException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
-			
 		}
 		return requestResult;
 	}
 
+	@Override
+	public JSONObject enterVoteSession(String sessionCode) {
+		JSONObject result = new JSONObject();
+		if(voteService.canEnterSession(sessionCode)) {
+			try {
+				result.put("success", true);
+				result.put("sessionCode", sessionCode);
+				result.put("actNames", voteService.getSessionActNames(sessionCode));
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
+		} else {
+			try {
+				result.put("success", false);
+				result.put("message", "session pas commence ou session est active");
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		return result;
+	}
+	
+	@Override
+	public JSONObject processVoteSessionRequest(WebRequest webRequest, String sessionCode) {
+		JSONObject result = null;
+		String request = webRequest.getParameter("request");
+		
+		if(request.equals("getUpdate")) {
+			if(voteService.needForUpdate(sessionCode, Integer.parseInt(webRequest.getParameter("clientIndex")))) {
+				try {
+					result = new JSONObject();
+					result.put("update", true);
+				} catch (JSONException e) {
+					e.printStackTrace();
+				}
+				
+			} else {
+				try {
+					result = new JSONObject();
+					result.put("update", false);
+				} catch (JSONException e) {
+					e.printStackTrace();
+				}
+			}
+		} else if(request.equals("getActNames")) {
+			try {
+				result = new JSONObject();
+				result.put("succes", true);
+				result.put("actNames", voteService.getSessionActNames(sessionCode));
+				result.put("message", result);
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
+		}
+		return result;
+	}
+
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

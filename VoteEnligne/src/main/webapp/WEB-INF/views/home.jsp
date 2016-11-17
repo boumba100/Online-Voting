@@ -11,20 +11,35 @@
 	<div class="wrapper">
 		<h1>Bonjour!</h1>
 		<input class="buttonHolder" type="button" value="VOTEZ ICI!"
-			onclick='goTo(VOTE_PAGE)'>
+			onclick='enterVoteSession()'>
 
 		<form method="POST" id="changePageForm">
 			<input class="button" id="chosenPage" name="chosenPage" type="hidden" /></br>
-			<input class="codeInput" type="text" placeholder="code" name="code" />
+			<input class="codeInput" type="text" placeholder="code"
+				id="sessionCodeInput" name="code" /></br>
+				<span id="errorMessage"></span>
 		</form>
 	</div>
 </body>
 </html>
 
 <script type="text/javascript">
-	var VOTE_PAGE = "pageVote";
-	function goTo(page) {
-		document.getElementById('chosenPage').value = VOTE_PAGE;
-		document.getElementById("changePageForm").submit();
+	function enterVoteSession() {
+		$.post("", {
+			sessionCode : document.getElementById('sessionCodeInput').value
+		}, function(data, status) {
+			var result = JSON.parse(data);
+			if (result.success == true) {
+				goToVotePage();
+			} else {
+				console.log("test " + result.message);
+				document.getElementById('errorMessage').textContent = result.message;
+			}
+
+		});
+
+		function goToVotePage() {
+			window.location = "pageVote";
+		}
 	}
 </script>

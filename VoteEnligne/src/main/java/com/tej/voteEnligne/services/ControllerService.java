@@ -7,10 +7,13 @@ public interface ControllerService {
 	
 	public String createVoteSession(String code, String actsString, String adminCode);
 	
-    public JSONObject getVoteSession(String code);
-    
     public String startVoteSession(String code, String passcode);
     
     public JSONObject processControlRequest(WebRequest webRequest);
+    
+    public JSONObject enterVoteSession(String sessionCode);
+    
+    public JSONObject processVoteSessionRequest(WebRequest webRequest, String sessionCode);
+    	
     
 }
