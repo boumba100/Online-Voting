@@ -36,7 +36,6 @@ public class ControllerServiceImplement implements ControllerService {
 	public JSONObject processControlRequest(WebRequest webRequest) {
 		String requestType = webRequest.getParameter("type");
 		JSONObject requestResult = null;
-		System.out.println(webRequest.getParameter("type"));
 
 		if (requestType.equals("command")) {
 			if (webRequest.getParameter("command").equals("nextAct")) {
@@ -72,7 +71,7 @@ public class ControllerServiceImplement implements ControllerService {
 	@Override
 	public JSONObject enterVoteSession(String sessionCode) {
 		JSONObject result = new JSONObject();
-		if(voteService.canEnterSession(sessionCode)) {
+		if (voteService.canEnterSession(sessionCode)) {
 			try {
 				result.put("success", true);
 				result.put("sessionCode", sessionCode);
@@ -88,87 +87,43 @@ public class ControllerServiceImplement implements ControllerService {
 				e.printStackTrace();
 			}
 		}
-		
+
 		return result;
 	}
-	
+
 	@Override
 	public JSONObject processVoteSessionRequest(WebRequest webRequest, String sessionCode) {
-		JSONObject result = null;
+		JSONObject result = new JSONObject();
 		String request = webRequest.getParameter("request");
-		
-		if(request.equals("getUpdate")) {
+		if(request.equals("getActNames")) {
+			try {
+				result.put("success", true);
+				result.put("sessionCode", sessionCode);
+				result.put("actNames", voteService.getSessionActNames(sessionCode));
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
+		} else if(request.equals("update")) {
 			if(voteService.needForUpdate(sessionCode, Integer.parseInt(webRequest.getParameter("clientIndex")))) {
 				try {
-					result = new JSONObject();
 					result.put("update", true);
+					result.put("currentIndex", voteService.getVoteSessionIndex(sessionCode));
 				} catch (JSONException e) {
 					e.printStackTrace();
 				}
-				
 			} else {
 				try {
-					result = new JSONObject();
 					result.put("update", false);
 				} catch (JSONException e) {
 					e.printStackTrace();
 				}
 			}
-		} else if(request.equals("getActNames")) {
-			try {
-				result = new JSONObject();
-				result.put("succes", true);
-				result.put("actNames", voteService.getSessionActNames(sessionCode));
-				result.put("message", result);
-			} catch (JSONException e) {
-				e.printStackTrace();
-			}
 		}
+		
 		return result;
 	}
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

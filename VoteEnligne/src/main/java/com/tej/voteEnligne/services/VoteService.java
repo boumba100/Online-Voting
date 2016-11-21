@@ -104,12 +104,16 @@ public class VoteService {
 	}
 	
 	public boolean needForUpdate(String sessionCode, int clientIndex) {
-		VoteSession voteSession = this.codeVoteMap.get(sessionCode);
+		VoteSession voteSession = codeVoteMap.get(sessionCode);
 		if(!(voteSession.getCurrentActIndex() == clientIndex)) {
 			return true;
 		} else {
 			return false;
 		}
+	}
+	
+	public int getVoteSessionIndex(String sessionCode) {
+		return codeVoteMap.get(sessionCode).getCurrentActIndex();
 	}
 	
 	private List<Act> actsStringToActList(String actsString) {

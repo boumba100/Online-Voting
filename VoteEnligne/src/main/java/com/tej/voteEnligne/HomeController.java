@@ -60,10 +60,7 @@ public class HomeController {
 	@RequestMapping(value = "/voteSession", method = RequestMethod.POST)
 	@ResponseBody
 	public String voteSession(WebRequest webRequest) { 
-		System.out.println(voterSession.getVoteSessionCode());
-		String t =	controllerService.processVoteSessionRequest(webRequest, voterSession.getVoteSessionCode()).toString();
-		System.out.println(t);
-		return t;
+		return controllerService.processVoteSessionRequest(webRequest, voterSession.getVoteSessionCode()).toString();
 	}
 
 	@RequestMapping(value = "/pageVote", method = RequestMethod.GET)
@@ -81,6 +78,7 @@ public class HomeController {
 	@RequestMapping(value = "/creation", method = RequestMethod.POST)
 	public String creation(@RequestParam("actsString") String actsString, @RequestParam("code") String code,
 			@RequestParam("adminCode") String adminCode) {
+		controllerService.createVoteSession(code, actsString, adminCode);
 		return "CreateVote";
 	}
 	

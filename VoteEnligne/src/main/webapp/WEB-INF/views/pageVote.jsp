@@ -20,14 +20,49 @@
 </html>
 
 <script type="text/javascript">
-getActs();
-function getActs() {
-	$.post("voteSession", {
-		request : "getActNames"
-	}, function(data, status) {
-		var jsonResult = JSON.parse(data);
-		console.log(data);
-	});
-	
-}
+	var currentIndex = 0;
+	startSession()
+	function startSession() {
+		getActs();
+		setInterval(function() {
+			checkForUpdate();
+		}, 1000);
+	}
+
+	function getActs() {
+		$.post("voteSession", {
+			request : "getActNames"
+		}, function(data, status) {
+			var jsonResult = JSON.parse(data);
+			if (jsonResult.success == true) {
+				console.log(data);
+			} else {
+				alert("erreur avec le serveur");
+				window.location = "";
+			}
+		});
+	}
+
+	function checkForUpdate() {
+		$.post("voteSession", {
+			request : "update",
+			clientIndex : currentIndex,
+		}, function(data, status) {
+			var jsonResult = JSON.parse(data);
+			if(jsonResult.update == true) {
+				currentIndex = jsonResult.currentIndex;
+				console.log(jsonResult);
+			}
+		});
+	}
 </script>
+
+
+
+
+
+
+
+
+
+
