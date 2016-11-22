@@ -116,6 +116,10 @@ public class VoteService {
 		return codeVoteMap.get(sessionCode).getCurrentActIndex();
 	}
 	
+	public void appendScore(String sessionCode, int score) {
+		codeVoteMap.get(sessionCode).appendActScore(score);
+	}
+	
 	private List<Act> actsStringToActList(String actsString) {
 		List<Act> actList = new ArrayList<Act>();
 		String[] actStringArray = actsString.split("\n");

@@ -5,6 +5,7 @@ import org.json.JSONObject;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.request.WebRequest;
 
+import com.tej.voteEnligne.models.VoterSession;
 import com.tej.voteEnligne.services.ActDB;
 import com.tej.voteEnligne.services.ControllerService;
 import com.tej.voteEnligne.services.VoteService;
@@ -92,7 +93,9 @@ public class ControllerServiceImplement implements ControllerService {
 	}
 
 	@Override
-	public JSONObject processVoteSessionRequest(WebRequest webRequest, String sessionCode) {
+	public JSONObject processVoteSessionRequest(WebRequest webRequest, VoterSession voterSession) {
+		int clientIndex = voterSession.getCurrentVoteindex();
+		String sessionCode = voterSession.getVoteSessionCode();
 		JSONObject result = new JSONObject();
 		String request = webRequest.getParameter("request");
 		if(request.equals("getActNames")) {
@@ -104,16 +107,34 @@ public class ControllerServiceImplement implements ControllerService {
 				e.printStackTrace();
 			}
 		} else if(request.equals("update")) {
-			if(voteService.needForUpdate(sessionCode, Integer.parseInt(webRequest.getParameter("clientIndex")))) {
+			if(voteService.needForUpdate(sessionCode, clientIndex)) {
 				try {
+					int currentIndex = voteService.getVoteSessionIndex(sessionCode);
 					result.put("update", true);
-					result.put("currentIndex", voteService.getVoteSessionIndex(sessionCode));
+					result.put("currentIndex", currentIndex);
+					voterSession.setCurrentIndex(currentIndex);
 				} catch (JSONException e) {
 					e.printStackTrace();
 				}
 			} else {
 				try {
 					result.put("update", false);
+				} catch (JSONException e) {
+					e.printStackTrace();
+				}
+			}
+		} else if(request.equals("submit")) {
+			int score = Integer.parseInt(webRequest.getParameter("score"));
+			if(score >= 1 && score <= 4) {
+				voteService.appendScore(sessionCode, score);
+				 try {
+					result.put("success", true);
+				} catch (JSONException e) {
+					e.printStackTrace();
+				}
+			} else {
+				try {
+					result.put("success", false);
 				} catch (JSONException e) {
 					e.printStackTrace();
 				}

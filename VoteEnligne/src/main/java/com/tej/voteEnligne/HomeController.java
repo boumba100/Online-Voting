@@ -60,7 +60,7 @@ public class HomeController {
 	@RequestMapping(value = "/voteSession", method = RequestMethod.POST)
 	@ResponseBody
 	public String voteSession(WebRequest webRequest) { 
-		return controllerService.processVoteSessionRequest(webRequest, voterSession.getVoteSessionCode()).toString();
+		return controllerService.processVoteSessionRequest(webRequest, voterSession).toString();
 	}
 
 	@RequestMapping(value = "/pageVote", method = RequestMethod.GET)

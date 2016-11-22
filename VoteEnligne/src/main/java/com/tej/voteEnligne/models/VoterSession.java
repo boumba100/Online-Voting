@@ -7,10 +7,12 @@ import org.json.JSONArray;
 public class VoterSession {
 	private String voteSessionCode;
 	private JSONArray actNameList;
+	private int currentVoteIndex;
 	
 	public VoterSession(String voteSessionCode, JSONArray actNameList) {
 		this.voteSessionCode = voteSessionCode;
 		this.actNameList = actNameList;
+		this.currentVoteIndex = 0;
 	}
 	
 	public String getVoteSessionCode() {
@@ -27,6 +29,14 @@ public class VoterSession {
 	
 	public void setActNameList(JSONArray actNameList) {
 		this.actNameList = actNameList;
+	} 
+	
+	public int getCurrentVoteindex() {
+		return this.currentVoteIndex;
+	}
+	
+	public void setCurrentIndex(int index) {
+		this.currentVoteIndex = index;
 	}
 	
 	/*private List<String> listStringToList(String listString) {

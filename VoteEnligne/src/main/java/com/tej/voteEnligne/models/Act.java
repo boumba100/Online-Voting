@@ -37,6 +37,10 @@ public class Act {
 		return this.score;
 	}
 	
+	public void appendScore(int score) {
+		this.score += score;
+	}
+	
 	private String[] extractNamesArray(String[] actArray) {
 		String[] namesArray = new String[actArray.length - 1];
 		for(int i = 1; i < actArray.length - 1; i ++) {

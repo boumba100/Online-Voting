@@ -55,6 +55,10 @@ public class VoteSession {
 		}
 	}
 	
+	public void appendActScore(int score) {
+		this.acts.get(this.currentActIndex).appendScore(score);
+	}
+	
 	public int getCurrentActIndex() {
 		return this.currentActIndex;
 	}
