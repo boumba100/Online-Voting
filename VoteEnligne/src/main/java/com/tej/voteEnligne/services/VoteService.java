@@ -86,6 +86,40 @@ public class VoteService {
 		return result;
 	}
 
+	@Deprecated
+	public boolean isSessionStart(String sessionCode) {
+		if(codeVoteMap.containsKey(sessionCode)) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	public boolean canEnterSession(String sessionCode) {
+		if(codeVoteMap.containsKey(sessionCode) && !codeVoteMap.get(sessionCode).isActive()) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	public boolean needForUpdate(String sessionCode, int clientIndex) {
+		VoteSession voteSession = codeVoteMap.get(sessionCode);
+		if(!(voteSession.getCurrentActIndex() == clientIndex)) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	public int getVoteSessionIndex(String sessionCode) {
+		return codeVoteMap.get(sessionCode).getCurrentActIndex();
+	}
+	
+	public void appendScore(String sessionCode, int score) {
+		codeVoteMap.get(sessionCode).appendActScore(score);
+	}
+	
 	private List<Act> actsStringToActList(String actsString) {
 		List<Act> actList = new ArrayList<Act>();
 		String[] actStringArray = actsString.split("\n");

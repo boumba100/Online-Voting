@@ -5,6 +5,7 @@ import org.json.JSONObject;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.request.WebRequest;
 
+import com.tej.voteEnligne.models.VoterSession;
 import com.tej.voteEnligne.services.ActDB;
 import com.tej.voteEnligne.services.ControllerService;
 import com.tej.voteEnligne.services.VoteService;
@@ -28,11 +29,6 @@ public class ControllerServiceImplement implements ControllerService {
 	}
 
 	@Override
-	public JSONObject getVoteSession(String code) {
-		return null;
-	}
-
-	@Override
 	public String startVoteSession(String code, String passcode) {
 		return voteService.initVoteSession(passcode, code);
 	}
@@ -41,8 +37,7 @@ public class ControllerServiceImplement implements ControllerService {
 	public JSONObject processControlRequest(WebRequest webRequest) {
 		String requestType = webRequest.getParameter("type");
 		JSONObject requestResult = null;
-		System.out.println(webRequest.getParameter("type"));
-		
+
 		if (requestType.equals("command")) {
 			if (webRequest.getParameter("command").equals("nextAct")) {
 				requestResult = voteService.nextAct(webRequest.getParameter("code"),
@@ -67,28 +62,96 @@ public class ControllerServiceImplement implements ControllerService {
 					requestResult.put("succes", false);
 					requestResult.put("message", sessionStartResult);
 				} catch (JSONException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
-			
 		}
 		return requestResult;
 	}
 
+	@Override
+	public JSONObject enterVoteSession(String sessionCode) {
+		JSONObject result = new JSONObject();
+		if (voteService.canEnterSession(sessionCode)) {
+			try {
+				result.put("success", true);
+				result.put("sessionCode", sessionCode);
+				result.put("actNames", voteService.getSessionActNames(sessionCode));
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
+		} else {
+			try {
+				result.put("success", false);
+				result.put("message", "session pas commence ou session est active");
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
+		}
+
+		return result;
+	}
+
+	@Override
+	public JSONObject processVoteSessionRequest(WebRequest webRequest, VoterSession voterSession) {
+		JSONObject result = new JSONObject();
+		String request = webRequest.getParameter("request");
+		if (voterSession != null) {
+			int clientIndex = voterSession.getCurrentVoteindex();
+			String sessionCode = voterSession.getVoteSessionCode();
+			if (request.equals("getActNames")) {
+				try {
+					result.put("success", true);
+					result.put("sessionCode", sessionCode);
+					result.put("actNames", voteService.getSessionActNames(sessionCode));Object {update: false}
+
+				} catch (JSONException e) {
+					e.printStackTrace();
+				}
+			} else if (request.equals("update")) {
+				if (voteService.needForUpdate(sessionCode, clientIndex)) {
+					try {
+						int currentIndex = voteService.getVoteSessionIndex(sessionCode);
+						result.put("update", true);
+						result.put("currentIndex", currentIndex);
+						voterSession.setCurrentIndex(currentIndex);
+					} catch (JSONException e) {
+						e.printStackTrace();
+					}
+				} else {
+					try {
+						result.put("update", false);
+					} catch (JSONException e) {
+						e.printStackTrace();
+					}
+				}
+			} else if (request.equals("submit")) {
+				int score = Integer.parseInt(webRequest.getParameter("score"));
+				if (score >= 1 && score <= 4) {
+					voteService.appendScore(sessionCode, score);
+					try {
+						result.put("success", true);
+					} catch (JSONException e) {
+						e.printStackTrace();
+					}
+				} else {
+					try {
+						result.put("success", false);
+					} catch (JSONException e) {
+						e.printStackTrace();
+					}
+				}
+			}
+		} else {
+			try {
+				result.put("success", false);
+				result.put("message", "sessionExpired");
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
+		}
+
+		return result;
+	}
+
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

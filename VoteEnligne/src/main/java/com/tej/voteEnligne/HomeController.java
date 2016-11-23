@@ -1,9 +1,10 @@
 package com.tej.voteEnligne;
 
+import javax.servlet.http.HttpSession;
+
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.stereotype.Controller;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.request.WebRequest;
 
 import com.tej.voteEnligne.implement.ControllerServiceImplement;
+import com.tej.voteEnligne.models.VoterSession;
 import com.tej.voteEnligne.services.ControllerService;
 
 /**
@@ -23,6 +25,7 @@ import com.tej.voteEnligne.services.ControllerService;
 @ComponentScan("com.tej.services")
 public class HomeController {
 
+	private VoterSession voterSession;
 	@Autowired
 	private static ControllerService controllerService = new ControllerServiceImplement();
 
@@ -31,27 +34,37 @@ public class HomeController {
 		return "home";
 	}
 
-	@RequestMapping(value = "/", method = RequestMethod.POST)
+	/*@RequestMapping(value = "/", method = RequestMethod.POST)
 	public String home(@RequestParam("chosenPage") String chosenPage, @RequestParam("code") String code) {
 		return chosenPage;
-	}
-
-	@RequestMapping(value = "/pageVote", method = { RequestMethod.GET, RequestMethod.POST })
-	public String pageVote() {
-		return "pageVote";
-	}
-
-	@RequestMapping(value = "/getAct", method = RequestMethod.GET)
+	}*/
+	
+	@RequestMapping(value = "/", method = RequestMethod.POST)
 	@ResponseBody
-	public String getAct() {
-		String actResult = null;
+	public String home(HttpSession session, @RequestParam("sessionCode") String sessionCode) {
+		JSONObject result = controllerService.enterVoteSession(sessionCode);
 		try {
-			actResult = new JSONObject().put("test", "test").toString();
+			if(result.getBoolean("success") == true) {
+				voterSession = new VoterSession(result.getString("sessionCode"), (JSONArray) result.get("actNames")); 
+			}
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
-		return actResult;
+		return result.toString();
 	}
+	
+	@RequestMapping(value = "/voteSession", method = RequestMethod.POST)
+	@ResponseBody
+	public String voteSession(WebRequest webRequest) { 
+		return controllerService.processVoteSessionRequest(webRequest, voterSession).toString();
+	}
+
+	@RequestMapping(value = "/pageVote", method = RequestMethod.GET)
+	public String pageVote() {
+		return "pageVote";
+	}
+	
+
 
 	@RequestMapping(value = "/creation", method = RequestMethod.GET)
 	public String creation() {
@@ -61,7 +74,7 @@ public class HomeController {
 	@RequestMapping(value = "/creation", method = RequestMethod.POST)
 	public String creation(@RequestParam("actsString") String actsString, @RequestParam("code") String code,
 			@RequestParam("adminCode") String adminCode) {
-		System.out.println(controllerService.createVoteSession(code, actsString, adminCode));
+		controllerService.createVoteSession(code, actsString, adminCode);
 		return "CreateVote";
 	}
 	
@@ -75,6 +88,7 @@ public class HomeController {
 	public String controle(WebRequest webRequest) {
 		return controllerService.processControlRequest(webRequest).toString();
 	}
+	
 	
 	
 }
