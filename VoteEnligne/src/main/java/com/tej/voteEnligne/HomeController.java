@@ -25,7 +25,6 @@ import com.tej.voteEnligne.services.ControllerService;
 @ComponentScan("com.tej.services")
 public class HomeController {
 
-	private VoterSession voterSession;
 	@Autowired
 	private static ControllerService controllerService = new ControllerServiceImplement();
 
@@ -43,9 +42,11 @@ public class HomeController {
 	@ResponseBody
 	public String home(HttpSession session, @RequestParam("sessionCode") String sessionCode) {
 		JSONObject result = controllerService.enterVoteSession(sessionCode);
+		VoterSession voterSession = null;
 		try {
 			if(result.getBoolean("success") == true) {
 				voterSession = new VoterSession(result.getString("sessionCode"), (JSONArray) result.get("actNames")); 
+				session.setAttribute("voterSession", voterSession);
 			}
 		} catch (JSONException e) {
 			e.printStackTrace();
@@ -55,7 +56,8 @@ public class HomeController {
 	
 	@RequestMapping(value = "/voteSession", method = RequestMethod.POST)
 	@ResponseBody
-	public String voteSession(WebRequest webRequest) { 
+	public String voteSession(HttpSession session, WebRequest webRequest) { 
+		VoterSession voterSession = (VoterSession) session.getAttribute("voterSession");
 		return controllerService.processVoteSessionRequest(webRequest, voterSession).toString();
 	}
 

@@ -103,7 +103,7 @@ public class ControllerServiceImplement implements ControllerService {
 				try {
 					result.put("success", true);
 					result.put("sessionCode", sessionCode);
-					result.put("actNames", voteService.getSessionActNames(sessionCode));Object {update: false}
+					result.put("actNames", voteService.getSessionActNames(sessionCode));
 
 				} catch (JSONException e) {
 					e.printStackTrace();

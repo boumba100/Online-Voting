@@ -14,7 +14,7 @@
 		<input class="codeInput" type="text" id="codeInput" placeholder="code" />
 		</br> <input class="passwordInput" type="password" id="passcodeInput"
 			placeholder="code de passe" /></br> <input class="button" type="button"
-			id="startSessionButton" value="commencez"
+			id="startSessionButton" value="commencer"
 			onclick="startPollSession()" /> </br> <span id="erroMessageHeader"></span>
 	</div>
 

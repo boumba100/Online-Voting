@@ -45,8 +45,8 @@
 				actNames = jsonResult.actNames;
 				updateVoteScreen();
 			} else {
-				alert("erreur avec le serveur");
-				window.location = "";
+				alert("probleme avec le serveur");
+				window.history.back();
 			}
 		});
 	}
@@ -87,7 +87,7 @@
 	}
 
 	function waitScreen() {
-		document.getElementById("currentActLabel").innerHTML = "ATTENDEZ POUR LA PROCHAINE PRÉSENTATION";
+		document.getElementById("currentActLabel").innerHTML = "ATTEND POUR LA PROCHAINE PRÉSENTATION";
 		for (var i = 1; i <= 4; i++) {
 			document.getElementById("button" + i).className = "invisible";
 		}

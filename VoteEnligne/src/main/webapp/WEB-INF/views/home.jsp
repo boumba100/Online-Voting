@@ -10,7 +10,7 @@
 <body>
 	<div class="wrapper">
 		<h1>Bonjour!</h1>
-		<input class="buttonHolder" type="button" value="VOTEZ ICI!"
+		<input class="buttonHolder" type="button" value="VOTE ICI!"
 			onclick='enterVoteSession()'>
 
 		<form method="POST" id="changePageForm">
