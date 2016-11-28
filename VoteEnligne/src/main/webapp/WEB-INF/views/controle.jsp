@@ -13,8 +13,9 @@
 	<div id="startInputDiv" class="startInput">
 		<input class="codeInput" type="text" id="codeInput" placeholder="code" />
 		</br> <input class="passwordInput" type="password" id="passcodeInput"
-			placeholder="code de passe" /></br> <input class="button" type="button"
-			id="startSessionButton" value="commencer"
+			placeholder="code de passe" /></br> <input type="text" id="raspberryIpInput"
+			placeholder="IP Raspberry" class="raspberryIpInput"/> </br> <input class="button"
+			type="button" id="startSessionButton" value="commencer"
 			onclick="startPollSession()" /> </br> <span id="erroMessageHeader"></span>
 	</div>
 
@@ -27,32 +28,36 @@
 </html>
 
 <script type="text/javascript">
+	var raspberryIp = null;
 	var voteSessionDiv = document.getElementById("voteSessionDiv");
 	var actNamesHolder = document.getElementById("actNamesHolder");
 	var currentActIndex = 0;
 	var maxIndex;
-	var codeValue = null;
-	var passcodeValue = null;
 
 	function startPollSession() {
 		console.log("sending data...");
 		codeValue = document.getElementById('codeInput').value;
 		passcodeValue = document.getElementById('passcodeInput').value;
-		$.post("controle", {
-			type : "startSession",
-			code: codeValue,
-			passcode: passcodeValue
-		}, function(data, status) {
-			var jsonResult = JSON.parse(data);
-			console.log(data);
-			if(jsonResult.succes == true) {
-				$("#startInputDiv").remove();
-				populateVoteSessionDiv(jsonResult.actNames);
-				document.getElementById('nextActButton').className = "nextActButton";
-			} else {
-				document.getElementById('erroMessageHeader').innerHTML= jsonResult.message;
-			}
-		});
+		$
+				.post(
+						"controle",
+						{
+							type : "startSession",
+							code : document.getElementById('codeInput').value,
+							passcode : passcodeValue = document.getElementById('passcodeInput').value
+						},
+						function(data, status) {
+							var jsonResult = JSON.parse(data);
+							console.log(data);
+							if (jsonResult.succes == true) {
+								$("#startInputDiv").remove();
+								populateVoteSessionDiv(jsonResult.actNames);
+								document.getElementById('nextActButton').className = "nextActButton";
+								raspberryIp = raspberryIp.getElementById("raspberryIpInput").value;
+							} else {
+								document.getElementById('erroMessageHeader').innerHTML = jsonResult.message;
+							}
+						});
 	}
 
 	function sendCommand(command) {
@@ -63,56 +68,56 @@
 			alert("Data: " + data + "\nStatus: " + status);
 		});
 	}
-	
+
 	function populateVoteSessionDiv(actNameList) {
 		maxIndex = actNameList.length;
 		createActCell(actNameList[0], 'activeActCell', 0)
-		for(var i = 1; i < actNameList.length; i ++) {
+		for (var i = 1; i < actNameList.length; i++) {
 			createActCell(actNameList[i], 'actCell', i)
 		}
-	}	
-	
+	}
+
 	function createActCell(actName, className, index) {
 		var cell = document.createElement("INPUT");
 		cell.setAttribute('type', 'text');
 		cell.setAttribute('id', 'actCell-' + index);
-		cell.setAttribute('value',actName);
+		cell.setAttribute('value', actName);
 		cell.setAttribute('readonly', true);
 		cell.setAttribute('class', className);
 		actNamesHolder.appendChild(cell);
-	} 
-	
+	}
+
 	function nextAct() {
 		$.post("controle", {
-			type: "command",
-			command: "nextAct",
-			code: codeValue,
-			passcode: passcodeValue},
-			function(data) {
-				console.log(data);
-				var jsonResult = JSON.parse(data);
-				if(jsonResult.success == true) {
-					updateActsView(jsonResult.currentActIndex, jsonResult.score);
-				}
-			});
+			type : "command",
+			command : "nextAct",
+			code : codeValue,
+			passcode : passcodeValue
+		}, function(data) {
+			console.log(data);
+			var jsonResult = JSON.parse(data);
+			if (jsonResult.success == true) {
+				updateActsView(jsonResult.currentActIndex, jsonResult.score);
+			}
+		});
 	}
-	
+
 	function updateActsView(index, score) {
-		document.getElementById('actCell-' + (index-1)).value += " (score : " + score + " )"; 
-		if(index == maxIndex) {
+		document.getElementById('actCell-' + (index - 1)).value += " (score : "
+				+ score + " )";
+		if (index == maxIndex) {
 			console.log("remove")
-			$("#nextActButton").remove() ;
-			document.getElementById('actCell-' + (index-1)).className = "actCell";
+			$("#nextActButton").remove();
+			document.getElementById('actCell-' + (index - 1)).className = "actCell";
 		} else {
-			document.getElementById('actCell-' + (index-1)).className = "actCell";
+			document.getElementById('actCell-' + (index - 1)).className = "actCell";
 			document.getElementById('actCell-' + index).className = "activeActCell";
 		}
 	}
-	
+
 	function nextLine() {
 		voteSessionDiv.appendChild(document.createElement("br"));
 	}
-	
 </script>
 
 
