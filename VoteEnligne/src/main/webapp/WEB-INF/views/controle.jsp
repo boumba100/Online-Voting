@@ -38,6 +38,7 @@
 		console.log("sending data...");
 		codeValue = document.getElementById('codeInput').value;
 		passcodeValue = document.getElementById('passcodeInput').value;
+		raspberryIp = document.getElementById("raspberryIpInput").value;
 		$
 				.post(
 						"controle",
@@ -53,11 +54,13 @@
 								$("#startInputDiv").remove();
 								populateVoteSessionDiv(jsonResult.actNames);
 								document.getElementById('nextActButton').className = "nextActButton";
-								raspberryIp = raspberryIp.getElementById("raspberryIpInput").value;
 							} else {
 								document.getElementById('erroMessageHeader').innerHTML = jsonResult.message;
 							}
 						});
+		if(passcodeValue.length > 0) {
+			connectToPi();
+		}
 	}
 
 	function sendCommand(command) {
@@ -113,6 +116,16 @@
 			document.getElementById('actCell-' + (index - 1)).className = "actCell";
 			document.getElementById('actCell-' + index).className = "activeActCell";
 		}
+	}
+	
+	function connectToPi() {
+		url = "http://172.16.37.4:5000/connect";
+		piPasscode = prompt("passcode pour le raspberryPi");
+		$.post(url, 
+				{passcode:piPasscode
+			}, function(data) {
+				console.log(data);
+			})
 	}
 
 	function nextLine() {
