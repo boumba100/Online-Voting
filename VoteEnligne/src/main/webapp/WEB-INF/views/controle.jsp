@@ -38,7 +38,7 @@
 		console.log("sending data...");
 		codeValue = document.getElementById('codeInput').value;
 		passcodeValue = document.getElementById('passcodeInput').value;
-		raspberryIp = document.getElementById("raspberryIpInput").value;
+		raspberryIp = "http://" + document.getElementById("raspberryIpInput").value;
 		$
 				.post(
 						"controle",
@@ -97,10 +97,10 @@
 			code : codeValue,
 			passcode : passcodeValue
 		}, function(data) {
-			console.log(data);
 			var jsonResult = JSON.parse(data);
 			if (jsonResult.success == true) {
 				updateActsView(jsonResult.currentActIndex, jsonResult.score);
+				sendScoreToPi(jsonResult.score);
 			}
 		});
 	}
@@ -109,7 +109,6 @@
 		document.getElementById('actCell-' + (index - 1)).value += " (score : "
 				+ score + " )";
 		if (index == maxIndex) {
-			console.log("remove")
 			$("#nextActButton").remove();
 			document.getElementById('actCell-' + (index - 1)).className = "actCell";
 		} else {
@@ -119,15 +118,23 @@
 	}
 	
 	function connectToPi() {
-		url = "http://172.16.37.4:5000/connect";
 		piPasscode = prompt("passcode pour le raspberryPi");
-		$.post(url, 
+		$.post(raspberryIp + "/connect", 
 				{passcode:piPasscode
 			}, function(data) {
 				console.log(data);
 			})
 	}
 
+	
+	function sendScoreToPi(scoreValue) {
+		$.post(raspberryIp + "/sendScore", {
+			passcode:piPasscode,
+			score: scoreValue
+			}, function(data) {
+				console.log(data);
+			})
+	}
 	function nextLine() {
 		voteSessionDiv.appendChild(document.createElement("br"));
 	}

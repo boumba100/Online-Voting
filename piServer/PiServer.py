@@ -1,4 +1,4 @@
-from flask import Flask, request, send_from_directory
+from flask import Flask, request, session
 from flask.ext.cors import CORS
 from ControllerService import *
 app = Flask(__name__)
@@ -12,21 +12,24 @@ def home():
 @app.route('/connect', methods=['POST'])
 
 def connect():
-   print "trying to connect"
    passcode = request.form['passcode']
    result = controllerService.connect(passcode)
    if result == True:
+      session['passcode'] = passcode
       return 'succes'
    else:
       return "erreur"
 
 @app.route('/sendScore', methods=['POST'])
 def sendScore():
-    print request.form['score']
-    return 'hello'
+    score = request.form['score']
+    clientPasscode = request.form['passcode']
+    print "trying to show score : " + score
+    return "result"
 
 if __name__ == '__main__':
    serverPasscode = raw_input("passcode for server connection :")
-   controllerService = ControllerService(serverPasscode)   
-   app.run(host= '0.0.0.0')
+   controllerService = ControllerService(serverPasscode)
+   app.secret_key = 'asdlfnjklhJKOHIGHUIASGFUIAGSDF'
+   app.run(host = '0.0.0.0')
 

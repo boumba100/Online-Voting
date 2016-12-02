@@ -11,5 +11,13 @@ class ControllerService:
             return True
         else:
             return False
-        
+
+    def sendScore(self, serverPasscode, clientPasscode, score):
+        if serverPasscode == clientPasscode:
+            #ArduinoConnection.sendScore(score)
+            return "success!"
+        else :
+            return "wrong passcode!"
+
+                
         
