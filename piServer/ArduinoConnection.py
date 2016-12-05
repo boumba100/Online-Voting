@@ -7,6 +7,6 @@ class ArduinoConnection:
         self.serialConnection = serial.Serial(self.port, 9600);
 
     def sendScore(self, score):
-        self.serialConnection.write(score)
+        self.serialConnection.write(score.encode())
         self.serialConnection.flush()
         
