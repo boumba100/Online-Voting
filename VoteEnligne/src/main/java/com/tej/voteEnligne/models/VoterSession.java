@@ -39,6 +39,7 @@ public class VoterSession {
 		this.currentVoteIndex = index;
 	}
 	
+	
 	/*private List<String> listStringToList(String listString) {
 		String t = listString.replace("[", " ").replace("]", "").replaceAll("\"", "").replaceAll("\\\\r", "");
 		System.out.println(t);

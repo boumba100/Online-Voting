@@ -64,6 +64,7 @@ public class VoteService {
 					result.put("success", true);
 					result.put("currentActIndex", voteSession.getCurrentActIndex());
 					result.put("score", voteSession.getCurrentActScore());
+					result.put("voterCount", voteSession.getVoterCount());
 				} catch (JSONException e) {
 					e.printStackTrace();
 				}
@@ -97,11 +98,13 @@ public class VoteService {
 	
 	public boolean canEnterSession(String sessionCode) {
 		if(codeVoteMap.containsKey(sessionCode) && !codeVoteMap.get(sessionCode).isActive()) {
+			codeVoteMap.get(sessionCode).addVoter();
 			return true;
 		} else {
 			return false;
 		}
 	}
+	
 	
 	public boolean needForUpdate(String sessionCode, int clientIndex) {
 		VoteSession voteSession = codeVoteMap.get(sessionCode);

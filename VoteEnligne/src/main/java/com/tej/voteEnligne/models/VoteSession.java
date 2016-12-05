@@ -7,6 +7,7 @@ public class VoteSession {
 	private String passCode;
 	private List<Act> acts;
 	private int currentActIndex;
+	private int voterCount;
 	private boolean start;
 	private boolean active;
 	
@@ -16,6 +17,7 @@ public class VoteSession {
 		this.currentActIndex = 0;
 		this.passCode = passCode;
 		this.active = false;
+		this.voterCount = 0;
 	}
 	
 	public void setStart(boolean start) {
@@ -65,6 +67,14 @@ public class VoteSession {
 	
 	public int getCurrentActScore() {
 		return this.acts.get(currentActIndex - 1).getScore();
+	}
+	
+	public void addVoter() {
+		this.voterCount += 1;
+	}
+	
+	public int getVoterCount() {
+		return this.voterCount;
 	}
 	
 }
