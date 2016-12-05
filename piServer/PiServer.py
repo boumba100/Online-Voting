@@ -25,7 +25,8 @@ def sendScore():
     score = request.form['score']
     clientPasscode = request.form['passcode']
     print "trying to show score : " + score
-    return "result"
+    result = controllerService.sendScore(clientPasscode, score)
+    return result
 
 if __name__ == '__main__':
    serverPasscode = raw_input("passcode for server connection :")
