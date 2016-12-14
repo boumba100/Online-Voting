@@ -98,9 +98,10 @@
 			passcode : passcodeValue
 		}, function(data) {
 			var jsonResult = JSON.parse(data);
+			console.log(jsonResult);
 			if (jsonResult.success == true) {
-				updateActsView(jsonResult.currentActIndex, jsonResult.score);
-				sendScoreToPi(jsonResult.score);
+				updateActsView(jsonResult.currentActIndex, Math.round(jsonResult.score / jsonResult.voterCount));
+				sendScoreToPi(Math.round(jsonResult.score / jsonResult.voterCount));
 			}
 		});
 	}

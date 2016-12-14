@@ -13,12 +13,12 @@
 		<input class="buttonHolder" type="button" value="VOTE ICI!"
 			onclick='enterVoteSession()'>
 
-		<form method="POST" id="changePageForm">
+		<div method="POST" id="changePageForm">
 			<input class="button" id="chosenPage" name="chosenPage" type="hidden" /></br>
 			<input class="codeInput" type="text" placeholder="code"
 				id="sessionCodeInput" name="code" /></br>
 				<span id="errorMessage"></span>
-		</form>
+		</div>
 	</div>
 </body>
 </html>
