@@ -20,6 +20,18 @@
 			class="invisible" type="button" id="button3" value="3"
 			onclick="submitVote(3)" /> <input class="invisible" type="button"
 			id="button4" value="4" onclick="submitVote(4)" />
+			<input class="invisible" type="button"
+			id="button5" value="5" onclick="submitVote(5)" />
+			<input class="invisible" type="button"
+			id="button6" value="6" onclick="submitVote(6)" />
+			<input class="invisible" type="button"
+			id="button7" value="7" onclick="submitVote(7)" />
+			<input class="invisible" type="button"
+			id="button8" value="8" onclick="submitVote(8)" />
+			<input class="invisible" type="button"
+			id="button9" value="9" onclick="submitVote(9)" />
+			<input class="invisible" type="button"
+			id="button10" value="10" onclick="submitVote(10)" />
 	</div>
 
 </body>
@@ -28,9 +40,12 @@
 <script type="text/javascript">
 	var actNames = null;
 	var currentIndex = 0;
-	startSession()
+	startSession();
+	
 	function startSession() {
 		getActs();
+		forceUpdate();
+		console.log(currentIndex);
 		setInterval(function() {
 			checkForUpdate();
 		}, 1000);
@@ -65,6 +80,20 @@
 			}
 		});
 	}
+	
+	function forceUpdate() {
+		$.post("voteSession", {
+			request : "forceUpdate",
+		}, function(data, status) {
+			var jsonResult = JSON.parse(data);
+			console.log(jsonResult);
+			if (jsonResult.update == true) {
+				currentIndex = jsonResult.currentIndex;
+				updateVoteScreen();
+
+			}
+		});
+	}
 
 	function submitVote(score) {
 		$.post("voteSession", {
@@ -78,7 +107,7 @@
 	function updateVoteScreen() {
 		if (currentIndex < actNames.length) {
 			document.getElementById("currentActLabel").innerHTML = actNames[currentIndex];
-			for (var i = 1; i <= 4; i++) {
+			for (var i = 1; i <= 10; i++) {
 				document.getElementById("button" + i).className = "button";
 			}
 		} else {
@@ -88,14 +117,14 @@
 
 	function waitScreen() {
 		document.getElementById("currentActLabel").innerHTML = "ATTEND POUR LA PROCHAINE PRÉSENTATION";
-		for (var i = 1; i <= 4; i++) {
+		for (var i = 1; i <= 10; i++) {
 			document.getElementById("button" + i).className = "invisible";
 		}
 	}
 	
 	function voteFinishScreen() {
 		document.getElementById("currentActLabel").innerHTML = "LA FIN";
-		for (var i = 1; i <= 4; i++) {
+		for (var i = 1; i <= 10; i++) {
 			document.getElementById("button" + i).className = "invisible";
 		}
 	}

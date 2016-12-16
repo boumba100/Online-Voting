@@ -4,15 +4,15 @@ h1 {
 	margin-left:auto;
     margin-right:auto;
     font-style:bold;
-    font-size: 90px;
+    font-size: 1000%;
 }
 input[type=button] {
 	margin-left:auto;
     margin-right:auto;
-    padding:10px;
+    padding:1%;
     -webkit-border-radius: 5px;
     border-radius: 5px; 
-    font-size: 30px;
+    font-size: 500%;
     font-weight: bold;
 }
 
@@ -23,9 +23,9 @@ input[type=text] {
     padding:10px;
     -webkit-border-radius: 5px;
     border-radius: 5px; 
-    font-size: 30px;
+    font-size: 400%;
     font-weight: bold;
-    width: 200px;
+    width: 40%;
 }
 
 span {

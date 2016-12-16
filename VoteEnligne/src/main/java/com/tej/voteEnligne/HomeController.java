@@ -42,9 +42,9 @@ public class HomeController {
 	@ResponseBody
 	public String home(HttpSession session, @RequestParam("sessionCode") String sessionCode) {
 		JSONObject result = controllerService.enterVoteSession(sessionCode);
-		VoterSession voterSession = null;
+		VoterSession voterSession = (VoterSession) session.getAttribute("voterSession");
 		try {
-			if(result.getBoolean("success") == true) {
+			if(result.getBoolean("success") == true && voterSession == null) {
 				voterSession = new VoterSession(result.getString("sessionCode"), (JSONArray) result.get("actNames")); 
 				session.setAttribute("voterSession", voterSession);
 			}

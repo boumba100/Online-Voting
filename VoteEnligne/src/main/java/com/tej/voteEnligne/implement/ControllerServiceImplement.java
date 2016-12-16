@@ -125,10 +125,22 @@ public class ControllerServiceImplement implements ControllerService {
 						e.printStackTrace();
 					}
 				}
-			} else if (request.equals("submit")) {
+			} else if (request.equals("forceUpdate")) {
+				try {
+					int currentIndex = voteService.getVoteSessionIndex(sessionCode);
+					result.put("update", true);
+					result.put("currentIndex", currentIndex);
+					voterSession.setCurrentIndex(currentIndex);
+				} catch (JSONException e) {
+					e.printStackTrace();
+				}
+			}
+
+			else if (request.equals("submit")) {
 				int score = Integer.parseInt(webRequest.getParameter("score"));
-				if (score >= 1 && score <= 4) {
+				if (score >= 1 && score <= 10 && voterSession.canVote()) {
 					voteService.appendScore(sessionCode, score);
+					voterSession.lockCurrentVote();
 					try {
 						result.put("success", true);
 					} catch (JSONException e) {

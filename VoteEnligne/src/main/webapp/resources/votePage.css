@@ -4,17 +4,17 @@ h1 {
 	margin-left:auto;
     margin-right:auto;
     font-style:bold;
-    font-size: 90px;
+    font-size: 700%;
 }
 input[type=button] {
-	margin-top:50px;
+	margin-top:5%;
 	text-align: center;
     padding:10px;
     -webkit-border-radius: 5px;
     border-radius: 5px; 
-    font-size: 30px;
+    font-size: 300%;
     font-weight: bold;
-    width: 300px;
+    width: 30%;
 }
 
 input[type=text] {
