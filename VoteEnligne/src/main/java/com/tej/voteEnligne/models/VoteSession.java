@@ -5,24 +5,18 @@ import java.util.Arrays;
 import java.util.List;
 
 public class VoteSession {
-	private String sessionCode;
 	private String passCode;
 	private List<Act> acts;
 	private int currentActIndex;
-	private int voterCount;
-	private List<Integer> voterActList;
 	private boolean start;
 	private boolean active;
 	
 	public VoteSession(String sessionCode, List<Act> acts, String passCode) {
-		this.sessionCode = sessionCode;
 		this.acts = acts;
 		this.currentActIndex = 0;
 		this.passCode = passCode;
 		this.active = false;
-		this.voterCount = 0;
-		this.voterActList = new ArrayList<Integer>();
-		this.voterActList.add(0);
+		
 	}
 	
 	public void setStart(boolean start) {
@@ -56,7 +50,6 @@ public class VoteSession {
 	public boolean nextAct() {
 		if(this.currentActIndex != acts.size()) {
 			this.currentActIndex += 1;
-			this.voterActList.add(0);
 			return true;
 		} else {
 			return false;
@@ -65,7 +58,6 @@ public class VoteSession {
 	
 	public void appendActScore(int score) {
 		this.acts.get(this.currentActIndex).appendScore(score);
-		this.voterActList.set(currentActIndex, this.voterActList.get(currentActIndex) + 1);
 	}
 	
 	public int getCurrentActIndex() {
@@ -73,15 +65,15 @@ public class VoteSession {
 	}
 	
 	public int getCurrentActScore() {
-		return this.acts.get(currentActIndex - 1).getScore();
+		return this.acts.get(currentActIndex).getScore();
 	}
 	
 	public void addVoter() {
-		this.voterCount += 1;
+		this.acts.get(currentActIndex).addVoter();
 	}
 	
 	public int getVoterCount() {
-		return this.voterActList.get(currentActIndex - 1);
+		return this.acts.get(currentActIndex).getVoterCount();
 	}
 	
 }

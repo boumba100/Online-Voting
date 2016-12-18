@@ -10,17 +10,20 @@ public class Act {
 	private String label;
 	private String[] names;
 	private int score;
+	private int voterCount;
 	
 	public Act(String label, String[] names, int score) { 
 		this.label = label;
 		this.names = names;
 		this.score = score;
+		this.voterCount = 0;
 	}
 	
 	public Act(String[] actArray) { 
 		this.label = actArray[0];
 		this.names = extractNamesArray(actArray);
 		this.score = 0;
+		this.voterCount = 0;
 	}
 	
 	public String getInfoJson() throws JSONException { // returns json object wiht name and 
@@ -39,6 +42,14 @@ public class Act {
 	
 	public void appendScore(int score) {
 		this.score += score;
+	}
+	
+	public void addVoter() {
+		this.voterCount += 1;
+	}
+	
+	public int getVoterCount() {
+		return this.voterCount;
 	}
 	
 	private String[] extractNamesArray(String[] actArray) {

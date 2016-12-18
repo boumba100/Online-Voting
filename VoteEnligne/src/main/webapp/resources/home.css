@@ -1,19 +1,29 @@
 @CHARSET "ISO-8859-1";
 
+body {
+    background-color: #4CAF50;
+}
+
+
 h1 {
 	margin-left:auto;
     margin-right:auto;
-    font-style:bold;
-    font-size: 1000%;
+    font-family:"Arial Black", Gadget, sans-serif;
+    font-size: 800%;
+    margin-top:20%;
+    color:#F5F5F5;
 }
 input[type=button] {
+	background-color: #EF5350;
+    color:#F5F5F5;
 	margin-left:auto;
     margin-right:auto;
-    padding:1%;
+    padding:2%;
     -webkit-border-radius: 5px;
-    border-radius: 5px; 
-    font-size: 500%;
-    font-weight: bold;
+    border-radius: 1px; 
+    font-family:"Arial Black", Gadget, sans-serif;
+    font-size: 600%;
+    width:70%
 }
 
 input[type=text] {
@@ -24,12 +34,15 @@ input[type=text] {
     -webkit-border-radius: 5px;
     border-radius: 5px; 
     font-size: 400%;
-    font-weight: bold;
-    width: 40%;
+    font-family:"Arial Black", Gadget, sans-serif;
+    font-size: 600%;
+    width: 70%;
+    background-color:#F5F5F5;
 }
 
 span {
 	color: red;
+	font-size:200%;
 }
 
 

@@ -42,6 +42,9 @@ public class ControllerServiceImplement implements ControllerService {
 			if (webRequest.getParameter("command").equals("nextAct")) {
 				requestResult = voteService.nextAct(webRequest.getParameter("code"),
 						webRequest.getParameter("passcode"));
+			} else if(webRequest.getParameter("command").equals("stopSession")){
+				requestResult = voteService.stopSession(webRequest.getParameter("code"),
+						webRequest.getParameter("passcode"));
 			}
 		} else if (requestType.equals("startSession")) {
 			String sessionStartResult = startVoteSession(webRequest.getParameter("code"),
@@ -83,7 +86,7 @@ public class ControllerServiceImplement implements ControllerService {
 		} else {
 			try {
 				result.put("success", false);
-				result.put("message", "session pas commence ou session est active");
+				result.put("message", "session pas commence ou session n'est active");
 			} catch (JSONException e) {
 				e.printStackTrace();
 			}
@@ -109,7 +112,15 @@ public class ControllerServiceImplement implements ControllerService {
 					e.printStackTrace();
 				}
 			} else if (request.equals("update")) {
-				if (voteService.needForUpdate(sessionCode, clientIndex)) {
+				int needForUpdate = voteService.needForUpdate(sessionCode, clientIndex);
+				if (needForUpdate == 0) { //0 means session does not exist; 1 means update; 2 means no update
+					try {
+						result.put("update", false);
+						result.put("type", 0);
+					} catch (JSONException e) {
+						e.printStackTrace();
+					}
+				} else if(needForUpdate == 1) {
 					try {
 						int currentIndex = voteService.getVoteSessionIndex(sessionCode);
 						result.put("update", true);
@@ -118,9 +129,11 @@ public class ControllerServiceImplement implements ControllerService {
 					} catch (JSONException e) {
 						e.printStackTrace();
 					}
-				} else {
+				}
+				else {
 					try {
 						result.put("update", false);
+						result.put("type", 2);
 					} catch (JSONException e) {
 						e.printStackTrace();
 					}
@@ -128,9 +141,12 @@ public class ControllerServiceImplement implements ControllerService {
 			} else if (request.equals("forceUpdate")) {
 				try {
 					int currentIndex = voteService.getVoteSessionIndex(sessionCode);
-					result.put("update", true);
 					result.put("currentIndex", currentIndex);
-					voterSession.setCurrentIndex(currentIndex);
+					result.put("update", true);
+					result.put("didVote", !voterSession.canVote());
+					if (voterSession.getCurrentVoteindex() != currentIndex) {
+						voterSession.setCurrentIndex(currentIndex);
+					}
 				} catch (JSONException e) {
 					e.printStackTrace();
 				}

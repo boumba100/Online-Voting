@@ -1,29 +1,30 @@
 @CHARSET "UTF-8";
 
+body {
+    background-color: #4CAF50;
+}
+
+
 h1 {
 	margin-left:auto;
     margin-right:auto;
-    font-style:bold;
+    font-family:"Arial Black", Gadget, sans-serif;
     font-size: 700%;
+    color:#F5F5F5;
 }
+
 input[type=button] {
 	margin-top:5%;
 	text-align: center;
-    padding:10px;
-    -webkit-border-radius: 5px;
+    padding:5%;
     border-radius: 5px; 
-    font-size: 300%;
-    font-weight: bold;
+    font-size: 500%;
+    font-family:"Arial Black", Gadget, sans-serif;
     width: 30%;
+    background-color: #EF5350;
+    color:#F5F5F5;
 }
 
-input[type=text] {
-	
-}
-
-input[type=password] {
-	
-}
 
 span {
 	font-style: bold;

@@ -60,20 +60,18 @@ public class VoteService {
 		if(voteSession != null) {
 			if(voteSession.isPasscode(passcode)) {
 				try {
-					voteSession.nextAct();
 					result.put("success", true);
-					result.put("currentActIndex", voteSession.getCurrentActIndex());
 					result.put("score", voteSession.getCurrentActScore());
 					result.put("voterCount", voteSession.getVoterCount());
+					voteSession.nextAct();
+					result.put("currentActIndex", voteSession.getCurrentActIndex());
 				} catch (JSONException e) {
-					e.printStackTrace();
 				}
 			} else {
 				try {
 					result.put("success", false);
 					result.put("message", "mauvais code");
 				} catch (JSONException e) {
-					e.printStackTrace();
 				}
 			}
 		} else {
@@ -81,7 +79,33 @@ public class VoteService {
 				result.put("success", false);
 				result.put("message", "session n'exist pas");
 			} catch (JSONException e) {
-				e.printStackTrace();
+			}
+		}
+		return result;
+	}
+	
+	public JSONObject stopSession(String code, String passcode) {
+		JSONObject result = new JSONObject();
+		VoteSession voteSession = codeVoteMap.get(code);
+		if(voteSession != null) {
+			if(voteSession.isPasscode(passcode)) {
+				try {
+					result.put("success", true);
+					codeVoteMap.remove(code);
+				} catch (JSONException e) {
+				}
+			} else {
+				try {
+					result.put("success", false);
+					result.put("message", "mauvais code de passe");
+				} catch (JSONException e) {
+				}
+			}
+		} else {
+			try {
+				result.put("success", false);
+				result.put("message", "session n'exist pas");
+			} catch (JSONException e) {
 			}
 		}
 		return result;
@@ -98,7 +122,6 @@ public class VoteService {
 	
 	public boolean canEnterSession(String sessionCode) {
 		if(codeVoteMap.containsKey(sessionCode) && !codeVoteMap.get(sessionCode).isActive()) {
-			codeVoteMap.get(sessionCode).addVoter();
 			return true;
 		} else {
 			return false;
@@ -106,12 +129,15 @@ public class VoteService {
 	}
 	
 	
-	public boolean needForUpdate(String sessionCode, int clientIndex) {
+	public int needForUpdate(String sessionCode, int clientIndex) {
 		VoteSession voteSession = codeVoteMap.get(sessionCode);
-		if(!(voteSession.getCurrentActIndex() == clientIndex)) {
-			return true;
+		if(voteSession == null) {
+			return 0;
+		}
+		else if(!(voteSession.getCurrentActIndex() == clientIndex)) {
+			return 1;
 		} else {
-			return false;
+			return 2;
 		}
 	}
 	
@@ -121,6 +147,7 @@ public class VoteService {
 	
 	public void appendScore(String sessionCode, int score) {
 		codeVoteMap.get(sessionCode).appendActScore(score);
+		codeVoteMap.get(sessionCode).addVoter();
 	}
 	
 	private List<Act> actsStringToActList(String actsString) {

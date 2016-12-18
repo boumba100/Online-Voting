@@ -47,7 +47,7 @@ span {
 	width: 200px;
 }
 
-.nextActButton {
+.controlButton {
 	margin-top: 30%;
 }
 
@@ -76,9 +76,6 @@ span {
 	text-align: center;
 }
 
-.button {
-	top: 50%;
-}
 
 .codeInput {
 	margin-top: 10%;

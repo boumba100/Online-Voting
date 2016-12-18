@@ -13,16 +13,21 @@
 	<div id="startInputDiv" class="startInput">
 		<input class="codeInput" type="text" id="codeInput" placeholder="code" />
 		</br> <input class="passwordInput" type="password" id="passcodeInput"
-			placeholder="code de passe" /></br> <input type="text" id="raspberryIpInput"
-			placeholder="IP Raspberry" class="raspberryIpInput"/> </br> <input class="button"
-			type="button" id="startSessionButton" value="commencer"
-			onclick="startPollSession()" /> </br> <span id="erroMessageHeader"></span>
+			placeholder="code de passe" /></br> <input type="text"
+			id="raspberryIpInput" placeholder="IP Raspberry"
+			class="raspberryIpInput" /> </br> <input class="controlButton"
+			type="button" id="startSessionButton" value="Commencer"
+			onclick="startPollSession()" /> <input class="controlButton"
+			id="removeSessionButton" type="button" value="Arreter la Session"
+			onclick="stopSession()"></br> <span id="erroMessageHeader"></span>
 	</div>
 
 	<div id="voteSessionDiv" class="voteSessionDiv" class="invisible">
 		<div id="actNamesHolder"></div>
 		<input class="invisible" id="nextActButton" type="button"
-			value="prochain" onclick="nextAct()">
+			value="prochain" onclick="nextAct()"> <input
+			class="invisible" id="stopButton" type="button"
+			value="arreter la session" onclick="stopSession()">
 	</div>
 </body>
 </html>
@@ -33,19 +38,23 @@
 	var actNamesHolder = document.getElementById("actNamesHolder");
 	var currentActIndex = 0;
 	var maxIndex;
+	var connectedToPi = false;
+	var codeValue = null;
+	var passcodeValue = null;
 
 	function startPollSession() {
-		console.log("sending data...");
 		codeValue = document.getElementById('codeInput').value;
 		passcodeValue = document.getElementById('passcodeInput').value;
-		raspberryIp = "http://" + document.getElementById("raspberryIpInput").value;
+		raspberryIp = "http://"
+				+ document.getElementById("raspberryIpInput").value;
 		$
 				.post(
 						"controle",
 						{
 							type : "startSession",
 							code : document.getElementById('codeInput').value,
-							passcode : passcodeValue = document.getElementById('passcodeInput').value
+							passcode : passcodeValue = document
+									.getElementById('passcodeInput').value
 						},
 						function(data, status) {
 							var jsonResult = JSON.parse(data);
@@ -53,14 +62,20 @@
 							if (jsonResult.succes == true) {
 								$("#startInputDiv").remove();
 								populateVoteSessionDiv(jsonResult.actNames);
-								document.getElementById('nextActButton').className = "nextActButton";
+								document.getElementById('nextActButton').className = "controlButton";
+								document.getElementById('stopButton').className = "controlButton";
 							} else {
 								document.getElementById('erroMessageHeader').innerHTML = jsonResult.message;
 							}
 						});
-		if(passcodeValue.length > 0) {
+		if (raspberryIp.length > 7) {
+			console.log(raspberryIp.length);
 			connectToPi();
+			connectedToPi = true;
 		}
+		window.onbeforeunload = function() {
+			  return "Veux tu vraiment quitter la session?";
+			};
 	}
 
 	function sendCommand(command) {
@@ -100,15 +115,45 @@
 			var jsonResult = JSON.parse(data);
 			console.log(jsonResult);
 			if (jsonResult.success == true) {
-				updateActsView(jsonResult.currentActIndex, Math.round(jsonResult.score / jsonResult.voterCount));
-				sendScoreToPi(Math.round(jsonResult.score / jsonResult.voterCount));
+				if (jsonResult.score == 0 || jsonResult.score == null) {
+					calculatedScore = 0;
+				} else {
+					calculatedScore = Math.round(jsonResult.score
+							/ jsonResult.voterCount);
+				}
+				updateActsView(jsonResult.currentActIndex, calculatedScore);
+				if (connectedToPi == true) {
+					sendScoreToPi(calculatedScore);
+				}
 			}
 		});
 	}
 
+	function stopSession() {
+		if (confirm("etes-vous sûr de vouloir arrêter la session")) {
+			if (codeValue == null || passcodeValue == null) {
+				codeValue = document.getElementById('codeInput').value;
+				passcodeValue = document.getElementById('passcodeInput').value;
+			}
+			$.post("controle", {
+				type : "command",
+				command : "stopSession",
+				code : codeValue,
+				passcode : passcodeValue
+			}, function(data) {
+				var jsonResult = JSON.parse(data);
+				if (jsonResult.success == true) {
+					location.reload();
+				} else {
+					alert(jsonResult.message);
+				}
+			});
+		}
+	}
+
 	function updateActsView(index, score) {
-		document.getElementById('actCell-' + (index - 1)).value += " (score : "
-				+ score + " )";
+		document.getElementById('actCell-' + (index - 1)).value += "("
+				+ score + ")";
 		if (index == maxIndex) {
 			$("#nextActButton").remove();
 			document.getElementById('actCell-' + (index - 1)).className = "actCell";
@@ -117,24 +162,23 @@
 			document.getElementById('actCell-' + index).className = "activeActCell";
 		}
 	}
-	
+
 	function connectToPi() {
 		piPasscode = prompt("passcode pour le raspberryPi");
-		$.post(raspberryIp + "/connect", 
-				{passcode:piPasscode
-			}, function(data) {
-				console.log(data);
-			})
+		$.post(raspberryIp + "/connect", {
+			passcode : piPasscode
+		}, function(data) {
+			console.log(data);
+		})
 	}
 
-	
 	function sendScoreToPi(scoreValue) {
 		$.post(raspberryIp + "/sendScore", {
-			passcode:piPasscode,
-			score: scoreValue
-			}, function(data) {
-				console.log(data);
-			})
+			passcode : piPasscode,
+			score : scoreValue
+		}, function(data) {
+			console.log(data);
+		})
 	}
 	function nextLine() {
 		voteSessionDiv.appendChild(document.createElement("br"));

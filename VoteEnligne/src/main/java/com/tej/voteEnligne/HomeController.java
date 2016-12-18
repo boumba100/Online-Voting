@@ -33,10 +33,6 @@ public class HomeController {
 		return "home";
 	}
 
-	/*@RequestMapping(value = "/", method = RequestMethod.POST)
-	public String home(@RequestParam("chosenPage") String chosenPage, @RequestParam("code") String code) {
-		return chosenPage;
-	}*/
 	
 	@RequestMapping(value = "/", method = RequestMethod.POST)
 	@ResponseBody
@@ -47,6 +43,8 @@ public class HomeController {
 			if(result.getBoolean("success") == true && voterSession == null) {
 				voterSession = new VoterSession(result.getString("sessionCode"), (JSONArray) result.get("actNames")); 
 				session.setAttribute("voterSession", voterSession);
+			} else if(result.getBoolean("success") == true){
+				voterSession.setVoteSessionCode(sessionCode);
 			}
 		} catch (JSONException e) {
 			e.printStackTrace();

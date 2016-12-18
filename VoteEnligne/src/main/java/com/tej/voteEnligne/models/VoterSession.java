@@ -15,8 +15,8 @@ public class VoterSession {
 	public VoterSession(String voteSessionCode, JSONArray actNameList) {
 		this.voteSessionCode = voteSessionCode;
 		this.actNameList = actNameList;
-		this.currentVoteIndex = 0;
 		this.didVoteMap = new HashMap<Integer, Boolean>();
+		this.initCurrentIndex();
 	}
 	
 	public String getVoteSessionCode() {
@@ -40,9 +40,13 @@ public class VoterSession {
 	}
 	
 	public void setCurrentIndex(int index) {
-		this.didVoteMap.put(index, true);
-		this.currentVoteIndex = index;
 		this.didVoteMap.put(index, false);
+		this.currentVoteIndex = index;
+	}
+	
+	public void initCurrentIndex() {
+		this.didVoteMap.put(0, false);
+		this.currentVoteIndex = 0;
 	}
 	
 	public boolean canVote() {
@@ -50,16 +54,10 @@ public class VoterSession {
 	}
 	
 	public void lockCurrentVote() {
-		this.didVoteMap.put(this.currentVoteIndex, true);
+		this.didVoteMap.put(this.currentVoteIndex, true); //true means voter has already voted for this act
 	}
 	
-	
-	
-	/*private List<String> listStringToList(String listString) {
-		String t = listString.replace("[", " ").replace("]", "").replaceAll("\"", "").replaceAll("\\\\r", "");
-		System.out.println(t);
-		return null;
-	}*/
+
 }
 
 

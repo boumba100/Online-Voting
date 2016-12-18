@@ -19,18 +19,15 @@
 			id="button2" value="2" onclick="submitVote(2)" /> <input
 			class="invisible" type="button" id="button3" value="3"
 			onclick="submitVote(3)" /> <input class="invisible" type="button"
-			id="button4" value="4" onclick="submitVote(4)" />
-			<input class="invisible" type="button"
-			id="button5" value="5" onclick="submitVote(5)" />
-			<input class="invisible" type="button"
-			id="button6" value="6" onclick="submitVote(6)" />
-			<input class="invisible" type="button"
-			id="button7" value="7" onclick="submitVote(7)" />
-			<input class="invisible" type="button"
-			id="button8" value="8" onclick="submitVote(8)" />
-			<input class="invisible" type="button"
-			id="button9" value="9" onclick="submitVote(9)" />
-			<input class="invisible" type="button"
+			id="button4" value="4" onclick="submitVote(4)" /> <input
+			class="invisible" type="button" id="button5" value="5"
+			onclick="submitVote(5)" /> <input class="invisible" type="button"
+			id="button6" value="6" onclick="submitVote(6)" /> <input
+			class="invisible" type="button" id="button7" value="7"
+			onclick="submitVote(7)" /> <input class="invisible" type="button"
+			id="button8" value="8" onclick="submitVote(8)" /> <input
+			class="invisible" type="button" id="button9" value="9"
+			onclick="submitVote(9)" /> <input class="invisible" type="button"
 			id="button10" value="10" onclick="submitVote(10)" />
 	</div>
 
@@ -40,15 +37,15 @@
 <script type="text/javascript">
 	var actNames = null;
 	var currentIndex = 0;
+	var getInterval = null;
 	startSession();
 	
 	function startSession() {
 		getActs();
 		forceUpdate();
-		console.log(currentIndex);
-		setInterval(function() {
+		getInterval = setInterval(function() {
 			checkForUpdate();
-		}, 1000);
+		}, 2000);
 	}
 
 	function getActs() {
@@ -60,7 +57,6 @@
 				actNames = jsonResult.actNames;
 				updateVoteScreen();
 			} else {
-				alert("probleme avec le serveur");
 				window.history.back();
 			}
 		});
@@ -72,11 +68,13 @@
 			clientIndex : currentIndex,
 		}, function(data, status) {
 			var jsonResult = JSON.parse(data);
-			console.log(jsonResult);
 			if (jsonResult.update == true) {
 				currentIndex = jsonResult.currentIndex;
 				updateVoteScreen();
-
+			} else {
+				if (jsonResult.type == 0) {
+					window.history.back();
+				}
 			}
 		});
 	}
@@ -86,10 +84,13 @@
 			request : "forceUpdate",
 		}, function(data, status) {
 			var jsonResult = JSON.parse(data);
-			console.log(jsonResult);
 			if (jsonResult.update == true) {
 				currentIndex = jsonResult.currentIndex;
-				updateVoteScreen();
+				if(jsonResult.didVote == true) {
+					waitScreen();
+				} else {
+					updateVoteScreen();
+				}
 
 			}
 		});
@@ -112,11 +113,12 @@
 			}
 		} else {
 			voteFinishScreen();
+			clearInterval(getInterval);
 		}
 	}
 
 	function waitScreen() {
-		document.getElementById("currentActLabel").innerHTML = "ATTEND POUR LA PROCHAINE PRÉSENTATION";
+		document.getElementById("currentActLabel").innerHTML = "ATTENDS POUR LA PROCHAINE PRÉSENTATION";
 		for (var i = 1; i <= 10; i++) {
 			document.getElementById("button" + i).className = "invisible";
 		}
@@ -127,6 +129,7 @@
 		for (var i = 1; i <= 10; i++) {
 			document.getElementById("button" + i).className = "invisible";
 		}
+		setTimeout(function(){ window.history.back(); }, 3000);
 	}
 </script>
 
