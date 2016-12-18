@@ -1,0 +1,17 @@
+127.0.0.1 - - [18/Dec/2016:14:48:14 -0500] "GET / HTTP/1.1" 200 11250
+127.0.0.1 - - [18/Dec/2016:14:48:14 -0500] "GET /tomcat.png HTTP/1.1" 200 5103
+127.0.0.1 - - [18/Dec/2016:14:48:14 -0500] "GET /tomcat.css HTTP/1.1" 200 5576
+127.0.0.1 - - [18/Dec/2016:14:48:14 -0500] "GET /bg-upper.png HTTP/1.1" 200 3103
+127.0.0.1 - - [18/Dec/2016:14:48:14 -0500] "GET /asf-logo.png HTTP/1.1" 200 17811
+127.0.0.1 - - [18/Dec/2016:14:48:14 -0500] "GET /bg-middle.png HTTP/1.1" 200 1918
+127.0.0.1 - - [18/Dec/2016:14:48:14 -0500] "GET /bg-button.png HTTP/1.1" 200 713
+127.0.0.1 - - [18/Dec/2016:14:48:14 -0500] "GET /bg-nav.png HTTP/1.1" 200 1401
+127.0.0.1 - - [18/Dec/2016:14:48:20 -0500] "GET /voteEnligne/ HTTP/1.1" 200 1123
+127.0.0.1 - - [18/Dec/2016:14:48:20 -0500] "GET /voteEnligne/resources/home.css HTTP/1.1" 304 -
+127.0.0.1 - - [18/Dec/2016:14:48:29 -0500] "GET /voteEnligne/controle HTTP/1.1" 200 5695
+127.0.0.1 - - [18/Dec/2016:14:48:36 -0500] "POST /voteEnligne/controle HTTP/1.1" 200 81
+127.0.0.1 - - [18/Dec/2016:14:48:41 -0500] "POST /voteEnligne/controle HTTP/1.1" 200 81
+127.0.0.1 - - [18/Dec/2016:14:57:56 -0500] "GET /voteEnligne/ HTTP/1.1" 200 1123
+127.0.0.1 - - [18/Dec/2016:14:57:56 -0500] "GET /voteEnligne/resources/home.css HTTP/1.1" 304 -
+127.0.0.1 - - [18/Dec/2016:14:57:56 -0500] "GET /favicon.ico HTTP/1.1" 200 21630
+127.0.0.1 - - [18/Dec/2016:14:58:01 -0500] "GET / HTTP/1.1" 200 11250
