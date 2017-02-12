@@ -1,3 +1,2 @@
 # Online-Voting
-Working on a live online voting system with java spring framework. This is a school project to be used for a talent show.
-note that the styling for the home and vote page is designed for mobile devices.
+Live voting server for mobile phones created with spring-mvc.Note that the final project is under school.
