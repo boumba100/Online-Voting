@@ -1,2 +1,2 @@
 # Online-Voting
-This is a live voting webiste for mobile phones. Note that the final project is under school. 
+This is a real time voting server for mobile phones. Note that the final project is under the branch "school". 
